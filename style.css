@@ -383,10 +383,10 @@ html, body {
 /* ===== Detail Panel (right side) ===== */
 .detail-panel {
   position: fixed;
-  top: 0;
+  top: var(--header-height);
   right: 0;
   width: var(--panel-width);
-  height: 100vh;
+  height: calc(100vh - var(--header-height));
   background: var(--bg);
   border-left: 1px solid var(--border);
   z-index: 900;
@@ -400,7 +400,7 @@ html, body {
 }
 
 .detail-content {
-  padding: 60px 40px 40px;
+  padding: 32px 40px 40px;
 }
 
 .detail-content img {
