@@ -43,11 +43,10 @@ html, body {
 }
 
 .logo {
-  font-family: 'Darker Grotesque', sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-size: 80px;
-  font-weight: 300;
+  font-weight: 700;
   letter-spacing: 0;
-  text-transform: uppercase;
 }
 
 /* ===== World (physics area) ===== */
