@@ -140,11 +140,21 @@ function addWorkToWorld(work, index) {
       overlay.style.backgroundColor = 'transparent';
     });
 
-    // Click: show detail
-    el.addEventListener('click', (e) => {
-      // Don't open detail if user is dragging
-      if (mouseConstraint.body) return;
-      showDetail(work);
+    // Click: show detail (distinguish from drag)
+    let pointerDown = null;
+    el.addEventListener('pointerdown', (e) => {
+      pointerDown = { x: e.clientX, y: e.clientY, time: Date.now() };
+    });
+    el.addEventListener('pointerup', (e) => {
+      if (!pointerDown) return;
+      const dx = e.clientX - pointerDown.x;
+      const dy = e.clientY - pointerDown.y;
+      const dt = Date.now() - pointerDown.time;
+      // Only count as click if minimal movement and short duration
+      if (Math.abs(dx) < 5 && Math.abs(dy) < 5 && dt < 300) {
+        showDetail(work);
+      }
+      pointerDown = null;
     });
 
     bodiesContainer.appendChild(el);
