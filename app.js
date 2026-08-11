@@ -343,6 +343,14 @@ document.getElementById('close-detail').addEventListener('click', () => {
   detailPanel.classList.add('hidden');
 });
 
+// Close detail panel when clicking outside
+document.addEventListener('pointerdown', (e) => {
+  if (detailPanel.classList.contains('hidden')) return;
+  if (!detailPanel.contains(e.target)) {
+    detailPanel.classList.add('hidden');
+  }
+});
+
 // Edit work
 document.getElementById('edit-work').addEventListener('click', () => {
   if (currentDetailIndex < 0) return;
