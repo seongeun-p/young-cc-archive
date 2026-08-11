@@ -21,7 +21,7 @@ const render = Render.create({
   engine: engine,
   options: {
     width: window.innerWidth,
-    height: window.innerHeight - 60,
+    height: window.innerHeight - 92,
     wireframes: false,
     background: 'transparent',
     pixelRatio: window.devicePixelRatio || 1,
@@ -36,7 +36,7 @@ Runner.run(runner, engine);
 // Walls
 function createWalls() {
   const w = window.innerWidth;
-  const h = window.innerHeight - 60;
+  const h = window.innerHeight - 92;
   const thickness = 60;
 
   const floor = Bodies.rectangle(w / 2, h + thickness / 2, w * 2, thickness, { isStatic: true, render: { visible: false } });
@@ -410,7 +410,7 @@ document.addEventListener('keydown', (e) => {
 
 // ===== Resize handling =====
 window.addEventListener('resize', () => {
-  const h = window.innerHeight - 60;
+  const h = window.innerHeight - 92;
   render.options.width = window.innerWidth;
   render.options.height = h;
   render.canvas.width = window.innerWidth;
