@@ -1,0 +1,334 @@
+/* ===== Reset & Base ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Dioda font - place dioda.woff2 / dioda.woff in /fonts folder if available */
+@font-face {
+  font-family: 'Dioda';
+  src: url('./fonts/dioda.woff2') format('woff2'),
+       url('./fonts/dioda.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --bg: #ffffff;
+  --text: #000000;
+  --border: #000000;
+  --panel-width: 50vw;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Dioda', 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* ===== Header ===== */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  padding: 24px 32px;
+}
+
+.logo {
+  font-family: 'Dioda', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+
+/* ===== World (physics area) ===== */
+.world {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#physics-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+#bodies-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+#bodies-container .body-item {
+  position: absolute;
+  pointer-events: all;
+  cursor: pointer;
+  transform-origin: center center;
+  transition: none;
+}
+
+#bodies-container .body-item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Hover overlay on body items */
+#bodies-container .body-item .hover-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+#bodies-container .body-item:hover .hover-overlay {
+  opacity: 1;
+}
+
+#bodies-container .body-item .hover-overlay .hover-text {
+  font-size: 14px;
+  font-weight: 900;
+  color: #000;
+  text-align: center;
+  line-height: 1.3;
+  padding: 4px 8px;
+}
+
+/* ===== Drop overlay ===== */
+.drop-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.85);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+  border: 3px dashed #000;
+}
+
+.drop-overlay.active {
+  display: flex;
+}
+
+.drop-overlay p {
+  font-size: 24px;
+  font-weight: 700;
+  color: #000;
+}
+
+/* ===== Upload Panel ===== */
+.upload-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--panel-width);
+  height: 100vh;
+  background: var(--bg);
+  border-right: 1px solid var(--border);
+  z-index: 900;
+  overflow-y: auto;
+  transform: translateX(0);
+  transition: transform 0.3s ease;
+}
+
+.upload-panel.hidden {
+  transform: translateX(-100%);
+}
+
+.upload-panel-inner {
+  padding: 60px 40px 40px;
+}
+
+.upload-panel h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 32px;
+  letter-spacing: 1px;
+}
+
+.form-group {
+  margin-bottom: 24px;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.form-group input[type="text"],
+.form-group input[type="url"],
+.form-group textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  padding: 12px 14px;
+  font-size: 14px;
+  font-family: inherit;
+  background: transparent;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #666;
+}
+
+.image-preview {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.image-preview p {
+  font-size: 13px;
+  color: #999;
+}
+
+.image-preview input[type="file"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.image-preview img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.submit-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  background: #000;
+  color: #fff;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background 0.2s;
+}
+
+.submit-btn:hover {
+  background: #333;
+}
+
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #000;
+  line-height: 1;
+}
+
+/* ===== Detail Panel (right side) ===== */
+.detail-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: var(--panel-width);
+  height: 100vh;
+  background: var(--bg);
+  border-left: 1px solid var(--border);
+  z-index: 900;
+  overflow-y: auto;
+  transform: translateX(0);
+  transition: transform 0.3s ease;
+}
+
+.detail-panel.hidden {
+  transform: translateX(100%);
+}
+
+.detail-content {
+  padding: 60px 40px 40px;
+}
+
+.detail-content img {
+  width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  margin-bottom: 24px;
+}
+
+.detail-content h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.detail-creator {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.detail-link {
+  display: inline-block;
+  font-size: 13px;
+  color: #000;
+  text-decoration: underline;
+  margin-bottom: 20px;
+}
+
+.detail-link.hidden {
+  display: none;
+}
+
+.detail-description {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #333;
+  white-space: pre-wrap;
+}

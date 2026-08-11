@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YOUNG C C</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <h1 class="logo">YOUNG C C</h1>
+  </header>
+
+  <!-- Main canvas area where items stack with physics -->
+  <div id="world" class="world">
+    <canvas id="physics-canvas"></canvas>
+    <div id="bodies-container"></div>
+    <!-- Drop zone overlay -->
+    <div id="drop-overlay" class="drop-overlay">
+      <p>여기에 이미지를 드롭하세요</p>
+    </div>
+  </div>
+
+  <!-- Upload form (half-screen panel) -->
+  <div id="upload-panel" class="upload-panel hidden">
+    <div class="upload-panel-inner">
+      <button class="close-btn" id="close-upload">&times;</button>
+      <h2>작업물 등록</h2>
+      <form id="upload-form">
+        <div class="form-group">
+          <label for="work-image">대표 이미지 *</label>
+          <div class="image-preview" id="image-preview">
+            <p>이미지를 드래그하거나 클릭하세요</p>
+            <input type="file" id="work-image" accept="image/*" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="work-title">작품 이름 *</label>
+          <input type="text" id="work-title" required placeholder="작품 이름을 입력하세요" />
+        </div>
+        <div class="form-group">
+          <label for="work-creator">제작자 이름 *</label>
+          <input type="text" id="work-creator" required placeholder="제작자 이름을 입력하세요" />
+        </div>
+        <div class="form-group">
+          <label for="work-link">관련 링크</label>
+          <input type="url" id="work-link" placeholder="https://..." />
+        </div>
+        <div class="form-group">
+          <label for="work-description">설명</label>
+          <textarea id="work-description" rows="4" placeholder="작품에 대한 설명을 적어주세요"></textarea>
+        </div>
+        <button type="submit" class="submit-btn">등록하기</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Detail panel (right side) -->
+  <div id="detail-panel" class="detail-panel hidden">
+    <button class="close-btn" id="close-detail">&times;</button>
+    <div class="detail-content">
+      <img id="detail-image" src="" alt="" />
+      <h2 id="detail-title"></h2>
+      <p class="detail-creator" id="detail-creator"></p>
+      <a id="detail-link" href="" target="_blank" class="detail-link hidden">관련 링크 보기</a>
+      <p class="detail-description" id="detail-description"></p>
+    </div>
+  </div>
+
+  <!-- Matter.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
