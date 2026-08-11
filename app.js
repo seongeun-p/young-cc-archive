@@ -335,3 +335,138 @@ window.addEventListener('resize', () => {
   Composite.remove(world, staticBodies);
   createWalls();
 });
+
+// ===== List Panel (left hover) =====
+const listTrigger = document.getElementById('list-trigger');
+const listPanel = document.getElementById('list-panel');
+const listContent = document.getElementById('list-content');
+let currentSort = 'creator';
+
+// Show panel on hover
+listTrigger.addEventListener('mouseenter', () => {
+  renderList();
+  listPanel.classList.add('visible');
+});
+
+listPanel.addEventListener('mouseleave', (e) => {
+  // Hide only if mouse leaves the panel entirely
+  const rect = listPanel.getBoundingClientRect();
+  if (e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom) {
+    listPanel.classList.remove('visible');
+  }
+});
+
+listPanel.addEventListener('mouseenter', () => {
+  listPanel.classList.add('visible');
+});
+
+// Also hide when mouse moves far from left
+document.addEventListener('mousemove', (e) => {
+  if (listPanel.classList.contains('visible') && e.clientX > 350) {
+    listPanel.classList.remove('visible');
+  }
+});
+
+// Sort buttons
+document.querySelectorAll('.sort-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentSort = btn.dataset.sort;
+    renderList();
+  });
+});
+
+function renderList() {
+  listContent.innerHTML = '';
+
+  if (works.length === 0) {
+    listContent.innerHTML = '<p style="font-size:13px;color:#999;">아직 등록된 작업물이 없습니다.</p>';
+    return;
+  }
+
+  if (currentSort === 'creator') {
+    renderByCreator();
+  } else {
+    renderByYear();
+  }
+}
+
+function renderByCreator() {
+  // Group by creator
+  const groups = {};
+  works.forEach((work, i) => {
+    const key = work.creator || '알 수 없음';
+    if (!groups[key]) groups[key] = [];
+    groups[key].push({ ...work, index: i });
+  });
+
+  // Sort creator names in Korean alphabetical order (가나다)
+  const sortedKeys = Object.keys(groups).sort((a, b) => a.localeCompare(b, 'ko'));
+
+  sortedKeys.forEach(creator => {
+    // Sort works by newest first
+    const items = groups[creator].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+    const groupEl = document.createElement('div');
+    groupEl.className = 'list-group';
+
+    const titleEl = document.createElement('div');
+    titleEl.className = 'list-group-title';
+    titleEl.textContent = creator;
+    groupEl.appendChild(titleEl);
+
+    const ul = document.createElement('ul');
+    ul.className = 'list-group-items';
+    items.forEach(item => {
+      const li = document.createElement('li');
+      li.textContent = item.title || '제목 없음';
+      li.addEventListener('click', () => showDetail(item));
+      ul.appendChild(li);
+    });
+    groupEl.appendChild(ul);
+    listContent.appendChild(groupEl);
+  });
+}
+
+function renderByYear() {
+  // Group by year
+  const groups = {};
+  works.forEach((work, i) => {
+    const date = work.createdAt ? new Date(work.createdAt) : null;
+    const key = date ? date.getFullYear().toString() : '날짜 없음';
+    if (!groups[key]) groups[key] = [];
+    groups[key].push({ ...work, index: i });
+  });
+
+  // Sort years descending (newest first)
+  const sortedKeys = Object.keys(groups).sort((a, b) => {
+    if (a === '날짜 없음') return 1;
+    if (b === '날짜 없음') return -1;
+    return parseInt(b) - parseInt(a);
+  });
+
+  sortedKeys.forEach(year => {
+    // Sort works by newest first within year
+    const items = groups[year].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+    const groupEl = document.createElement('div');
+    groupEl.className = 'list-group';
+
+    const titleEl = document.createElement('div');
+    titleEl.className = 'list-group-title';
+    titleEl.textContent = year;
+    groupEl.appendChild(titleEl);
+
+    const ul = document.createElement('ul');
+    ul.className = 'list-group-items';
+    items.forEach(item => {
+      const li = document.createElement('li');
+      li.textContent = `${item.title || '제목 없음'} — ${item.creator}`;
+      li.addEventListener('click', () => showDetail(item));
+      ul.appendChild(li);
+    });
+    groupEl.appendChild(ul);
+    listContent.appendChild(groupEl);
+  });
+}

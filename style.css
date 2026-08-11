@@ -272,6 +272,98 @@ html, body {
   line-height: 1;
 }
 
+/* ===== List Panel (left hover) ===== */
+.list-trigger {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 30px;
+  height: 100vh;
+  z-index: 850;
+}
+
+.list-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 320px;
+  height: 100vh;
+  background: var(--bg);
+  border-right: 1px solid var(--border);
+  z-index: 860;
+  overflow-y: auto;
+  transform: translateX(-100%);
+  transition: transform 0.25s ease;
+  pointer-events: none;
+}
+
+.list-panel.visible {
+  transform: translateX(0);
+  pointer-events: all;
+}
+
+.list-panel-inner {
+  padding: 80px 28px 40px;
+}
+
+.list-sort-tabs {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 12px;
+}
+
+.sort-btn {
+  background: none;
+  border: none;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: #999;
+  padding: 4px 0;
+  transition: color 0.2s;
+}
+
+.sort-btn.active {
+  color: #000;
+  font-weight: 700;
+}
+
+.list-content {
+  /* content rendered by JS */
+}
+
+.list-group {
+  margin-bottom: 24px;
+}
+
+.list-group-title {
+  font-size: 14px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  color: #000;
+}
+
+.list-group-items {
+  list-style: none;
+}
+
+.list-group-items li {
+  font-size: 13px;
+  font-weight: 300;
+  color: #444;
+  padding: 4px 0;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.list-group-items li:hover {
+  color: #000;
+}
+
 /* ===== Detail Panel (right side) ===== */
 .detail-panel {
   position: fixed;
