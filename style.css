@@ -43,13 +43,11 @@ html, body {
 }
 
 .logo {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Bricolage Grotesque', sans-serif;
   font-size: 80px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0;
   text-transform: uppercase;
-  transform: scaleX(1.8);
-  transform-origin: left center;
 }
 
 /* ===== World (physics area) ===== */
@@ -310,7 +308,7 @@ html, body {
 }
 
 .list-panel-inner {
-  padding: 12px 28px 40px;
+  padding: 24px 28px 40px;
 }
 
 .list-sort-tabs {
