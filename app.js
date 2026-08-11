@@ -557,3 +557,43 @@ function renderByYear() {
     listContent.appendChild(groupEl);
   });
 }
+
+// ===== Title Stretch Interaction =====
+const logo = document.querySelector('.logo');
+const originalTitle = logo.textContent;
+const stretchedTitle = '영상크리에이티브팀 작업 모음';
+let isDraggingTitle = false;
+let titleDragStartX = 0;
+let titleBaseWidth = 0;
+
+logo.addEventListener('pointerdown', (e) => {
+  e.preventDefault();
+  isDraggingTitle = true;
+  titleDragStartX = e.clientX;
+  titleBaseWidth = logo.offsetWidth;
+  logo.classList.add('dragging', 'korean');
+  logo.textContent = stretchedTitle;
+  logo.setPointerCapture(e.pointerId);
+});
+
+logo.addEventListener('pointermove', (e) => {
+  if (!isDraggingTitle) return;
+  const dx = e.clientX - titleDragStartX;
+  const scaleX = Math.max(1, 1 + dx / titleBaseWidth);
+  logo.style.transform = `scaleX(${scaleX})`;
+});
+
+logo.addEventListener('pointerup', (e) => {
+  if (!isDraggingTitle) return;
+  isDraggingTitle = false;
+  logo.classList.remove('dragging');
+  logo.releasePointerCapture(e.pointerId);
+  // Keep the stretched state
+});
+
+// Double-click to reset
+logo.addEventListener('dblclick', () => {
+  logo.textContent = originalTitle;
+  logo.classList.remove('korean');
+  logo.style.transform = '';
+});
