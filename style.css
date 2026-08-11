@@ -40,6 +40,8 @@ html, body {
   padding: 1px 32px;
   border-bottom: 1px solid #000;
   background: var(--bg);
+  height: var(--header-height);
+  overflow: hidden;
 }
 
 .logo {
@@ -53,7 +55,8 @@ html, body {
 
 .logo.korean {
   font-family: 'Noto Sans KR', sans-serif;
-  font-weight: 900;
+  font-weight: 700;
+  font-size: 62px;
 }
 
 /* ===== World (physics area) ===== */
