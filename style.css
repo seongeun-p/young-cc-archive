@@ -37,7 +37,7 @@ html, body {
   left: 0;
   width: 100%;
   z-index: 1000;
-  padding: 3px 32px;
+  padding: 1px 32px;
   border-bottom: 1px solid #000;
   background: var(--bg);
 }
