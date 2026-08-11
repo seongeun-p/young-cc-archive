@@ -319,7 +319,7 @@ html, body {
 }
 
 .list-panel-inner {
-  padding: 24px 28px 40px;
+  padding: 12px 28px 40px;
 }
 
 .list-sort-tabs {
@@ -327,6 +327,7 @@ html, body {
   gap: 16px;
   margin-bottom: 12px;
   border-bottom: 1px solid #e0e0e0;
+  padding-top: 12px;
   padding-bottom: 12px;
 }
 
@@ -400,7 +401,7 @@ html, body {
 }
 
 .detail-content {
-  padding: 32px 40px 40px;
+  padding: 32px 20px 40px;
 }
 
 .detail-content img {
@@ -444,7 +445,7 @@ html, body {
 .detail-actions {
   position: fixed;
   bottom: 100px;
-  left: 40px;
+  left: 20px;
   display: flex;
   gap: 8px;
 }
