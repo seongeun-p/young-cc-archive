@@ -19,6 +19,7 @@
   --text: #000000;
   --border: #000000;
   --panel-width: 33vw;
+  --header-height: 130px;
 }
 
 html, body {
@@ -36,7 +37,7 @@ html, body {
   left: 0;
   width: 100%;
   z-index: 1000;
-  padding: 24px 32px;
+  padding: 12px 32px;
   border-bottom: 1px solid #000;
   background: var(--bg);
 }
@@ -47,7 +48,7 @@ html, body {
   font-weight: 700;
   letter-spacing: 4px;
   text-transform: uppercase;
-  transform: scaleX(1.2);
+  transform: scaleX(1.4);
   transform-origin: left center;
 }
 
@@ -55,8 +56,8 @@ html, body {
 .world {
   position: relative;
   width: 100vw;
-  height: calc(100vh - 140px);
-  margin-top: 140px;
+  height: calc(100vh - var(--header-height));
+  margin-top: var(--header-height);
   overflow: hidden;
 }
 
@@ -281,19 +282,19 @@ html, body {
 /* ===== List Panel (left hover) ===== */
 .list-trigger {
   position: fixed;
-  top: 140px;
+  top: var(--header-height);
   left: 0;
   width: 30px;
-  height: calc(100vh - 140px);
+  height: calc(100vh - var(--header-height));
   z-index: 850;
 }
 
 .list-panel {
   position: fixed;
-  top: 140px;
+  top: var(--header-height);
   left: 0;
   width: 320px;
-  height: calc(100vh - 140px);
+  height: calc(100vh - var(--header-height));
   background: var(--bg);
   border-right: 1px solid var(--border);
   z-index: 860;
@@ -432,14 +433,14 @@ html, body {
 }
 
 .detail-actions {
-  margin-top: 32px;
+  margin-top: 60px;
   display: flex;
-  gap: 12px;
+  gap: 8px;
 }
 
 .action-btn {
-  padding: 10px 20px;
-  font-size: 13px;
+  padding: 5px 10px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.5px;
   border: 1px solid #000;
