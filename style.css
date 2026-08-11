@@ -18,7 +18,7 @@
   --bg: #ffffff;
   --text: #000000;
   --border: #000000;
-  --panel-width: 50vw;
+  --panel-width: 33vw;
 }
 
 html, body {
@@ -34,23 +34,29 @@ html, body {
   position: fixed;
   top: 0;
   left: 0;
+  width: 100%;
   z-index: 1000;
   padding: 24px 32px;
+  border-bottom: 1px solid #000;
+  background: var(--bg);
 }
 
 .logo {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 30px;
+  font-size: 100px;
   font-weight: 700;
   letter-spacing: 4px;
   text-transform: uppercase;
+  transform: scaleX(1.2);
+  transform-origin: left center;
 }
 
 /* ===== World (physics area) ===== */
 .world {
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 140px);
+  margin-top: 140px;
   overflow: hidden;
 }
 
@@ -275,19 +281,19 @@ html, body {
 /* ===== List Panel (left hover) ===== */
 .list-trigger {
   position: fixed;
-  top: 0;
+  top: 140px;
   left: 0;
   width: 30px;
-  height: 100vh;
+  height: calc(100vh - 140px);
   z-index: 850;
 }
 
 .list-panel {
   position: fixed;
-  top: 0;
+  top: 140px;
   left: 0;
   width: 320px;
-  height: 100vh;
+  height: calc(100vh - 140px);
   background: var(--bg);
   border-right: 1px solid var(--border);
   z-index: 860;
@@ -303,7 +309,7 @@ html, body {
 }
 
 .list-panel-inner {
-  padding: 80px 28px 40px;
+  padding: 28px 28px 40px;
 }
 
 .list-sort-tabs {
@@ -423,4 +429,37 @@ html, body {
   line-height: 1.7;
   color: #333;
   white-space: pre-wrap;
+}
+
+.detail-actions {
+  margin-top: 32px;
+  display: flex;
+  gap: 12px;
+}
+
+.action-btn {
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border: 1px solid #000;
+  background: #fff;
+  color: #000;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.action-btn:hover {
+  background: #000;
+  color: #fff;
+}
+
+.action-btn--danger {
+  border-color: #e00;
+  color: #e00;
+}
+
+.action-btn--danger:hover {
+  background: #e00;
+  color: #fff;
 }

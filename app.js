@@ -21,7 +21,7 @@ const render = Render.create({
   engine: engine,
   options: {
     width: window.innerWidth,
-    height: window.innerHeight,
+    height: window.innerHeight - 140,
     wireframes: false,
     background: 'transparent',
     pixelRatio: window.devicePixelRatio || 1,
@@ -36,7 +36,7 @@ Runner.run(runner, engine);
 // Walls
 function createWalls() {
   const w = window.innerWidth;
-  const h = window.innerHeight;
+  const h = window.innerHeight - 140;
   const thickness = 60;
 
   const floor = Bodies.rectangle(w / 2, h + thickness / 2, w * 2, thickness, { isStatic: true, render: { visible: false } });
@@ -229,6 +229,7 @@ function closeUploadPanel() {
   uploadPanel.classList.add('hidden');
   uploadForm.reset();
   pendingImageData = null;
+  delete uploadForm.dataset.editIndex;
   // Remove preview image if any
   const existingImg = imagePreview.querySelector('img');
   if (existingImg) existingImg.remove();
@@ -276,9 +277,31 @@ uploadForm.addEventListener('submit', (e) => {
     createdAt: Date.now(),
   };
 
-  works.push(work);
-  saveWorks();
-  addWorkToWorld(work, works.length - 1);
+  const editIndex = uploadForm.dataset.editIndex;
+  if (editIndex !== undefined && editIndex !== '') {
+    // Editing existing work
+    const idx = parseInt(editIndex);
+    work.createdAt = works[idx].createdAt; // preserve original timestamp
+    works[idx] = work;
+    delete uploadForm.dataset.editIndex;
+
+    // Rebuild physics world
+    for (const [bodyId, el] of domMap.entries()) {
+      el.remove();
+      const body = Composite.allBodies(world).find(b => b.id === bodyId);
+      if (body) Composite.remove(world, body);
+    }
+    bodyMap.clear();
+    domMap.clear();
+    saveWorks();
+    loadWorks();
+  } else {
+    // New work
+    works.push(work);
+    saveWorks();
+    addWorkToWorld(work, works.length - 1);
+  }
+
   closeUploadPanel();
 });
 
@@ -292,8 +315,14 @@ function saveWorks() {
 
 // ===== Detail Panel =====
 const detailPanel = document.getElementById('detail-panel');
+let currentDetailWork = null;
+let currentDetailIndex = -1;
 
 function showDetail(work) {
+  // Find the index of this work in the array
+  currentDetailIndex = works.findIndex(w => w.createdAt === work.createdAt && w.title === work.title);
+  currentDetailWork = work;
+
   document.getElementById('detail-image').src = work.image;
   document.getElementById('detail-title').textContent = work.title;
   document.getElementById('detail-creator').textContent = work.creator;
@@ -314,6 +343,55 @@ document.getElementById('close-detail').addEventListener('click', () => {
   detailPanel.classList.add('hidden');
 });
 
+// Edit work
+document.getElementById('edit-work').addEventListener('click', () => {
+  if (currentDetailIndex < 0) return;
+  const work = works[currentDetailIndex];
+
+  // Close detail, open upload panel pre-filled
+  detailPanel.classList.add('hidden');
+  openUploadPanel(null);
+
+  // Fill form with existing data
+  document.getElementById('work-title').value = work.title || '';
+  document.getElementById('work-creator').value = work.creator || '';
+  document.getElementById('work-link').value = work.link || '';
+  document.getElementById('work-description').value = work.description || '';
+  pendingImageData = work.image;
+
+  // Show image preview
+  let previewImg = imagePreview.querySelector('img');
+  if (!previewImg) {
+    previewImg = document.createElement('img');
+    imagePreview.appendChild(previewImg);
+  }
+  previewImg.src = work.image;
+  imagePreview.querySelector('p').style.display = 'none';
+
+  // Mark as editing
+  uploadForm.dataset.editIndex = currentDetailIndex;
+});
+
+// Delete work
+document.getElementById('delete-work').addEventListener('click', () => {
+  if (currentDetailIndex < 0) return;
+  if (!confirm('이 작업물을 삭제하시겠습니까?')) return;
+
+  works.splice(currentDetailIndex, 1);
+  saveWorks();
+  detailPanel.classList.add('hidden');
+
+  // Remove all physics bodies and DOM elements, reload
+  for (const [bodyId, el] of domMap.entries()) {
+    el.remove();
+    const body = Composite.allBodies(world).find(b => b.id === bodyId);
+    if (body) Composite.remove(world, body);
+  }
+  bodyMap.clear();
+  domMap.clear();
+  loadWorks();
+});
+
 // Close panels on Escape
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
@@ -324,10 +402,11 @@ document.addEventListener('keydown', (e) => {
 
 // ===== Resize handling =====
 window.addEventListener('resize', () => {
+  const h = window.innerHeight - 140;
   render.options.width = window.innerWidth;
-  render.options.height = window.innerHeight;
+  render.options.height = h;
   render.canvas.width = window.innerWidth;
-  render.canvas.height = window.innerHeight;
+  render.canvas.height = h;
 
   // Recreate walls
   const allBodies = Composite.allBodies(world);
