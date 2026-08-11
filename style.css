@@ -401,11 +401,12 @@ html, body {
 }
 
 .detail-content {
-  padding: 32px 20px 40px;
+  padding: 32px 30px 40px;
 }
 
 .detail-content img {
-  width: 100%;
+  width: calc(100% + 60px);
+  margin-left: -30px;
   max-height: 400px;
   object-fit: contain;
   margin-bottom: 24px;
@@ -445,7 +446,7 @@ html, body {
 .detail-actions {
   position: fixed;
   bottom: 100px;
-  left: 20px;
+  left: 30px;
   display: flex;
   gap: 8px;
 }
